@@ -115,5 +115,11 @@ class UczenTest(unittest.TestCase):
     def test_edytuj_uwage_error(self, id_uwagi, uwaga, blad):
         self.assertRaises(blad, self.uczen.edytuj_uwage, id_uwagi, uwaga)
 
+    def test_srednia_przedmiotu(self):
+        self.uczen.dodaj_przedmiot('Niemiecki')
+        self.uczen.dodaj_ocene_do_przedmiotu('Niemiecki', 5)
+        self.uczen.dodaj_ocene_do_przedmiotu('Niemiecki', 3)
+        assert_that(self.uczen.srednia_przedmiotu('Niemiecki')).is_in(4,-4)
+
     def tearDown(self):
         self.uczen = None

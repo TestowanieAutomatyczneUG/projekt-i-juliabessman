@@ -34,4 +34,20 @@ class PrzedmiotTest(unittest.TestCase):
 
     def tearDown(self):
         self.przedmiot = None
-  
+
+@parameterized_class(('id_oceny', 'nowa_ocena', 'error'), [
+    (0, '1', TypeError),
+    (0, 7, ValueError),
+    ('1', 1, TypeError),
+    (-1, 1, ValueError)
+])
+class PrzedmiotEdycjaTest(unittest.TestCase):
+    def setUp(self):
+        self.przedmiot = Przedmiot('przedmiot')
+
+    def test_edycja_oceny_error(self):
+        self.assertRaises(self.error, self.przedmiot.edytuj_ocene, self.id_oceny, self.nowa_ocena)
+
+    def tearDown(self):
+        self.przedmiot = None
+

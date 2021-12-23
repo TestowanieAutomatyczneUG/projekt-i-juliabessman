@@ -27,5 +27,13 @@ class UczenTest(unittest.TestCase):
         self.uczen.dodaj_przedmiot('Niemiecki')
         assert_that(self.uczen.wyswietl_liste_przedmiotow()).does_not_contain_duplicates()
 
+    @parameterized.expand([
+        (True, 'Przedmiot', TypeError),
+        ('Przedmiot', True, TypeError),
+        ('Przedmiot', '', ValueError),
+        ('', 'Przedmiot', ValueError),
+        ('Przedmiot', 'Przedmiot', ValueError),
+        ('Przedmiot', 'Przedmiot1', ValueError),
+    ])
     def tearDown(self):
         self.uczen = None

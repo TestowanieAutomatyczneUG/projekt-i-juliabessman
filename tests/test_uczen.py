@@ -46,5 +46,15 @@ class UczenTest(unittest.TestCase):
         self.uczen.dodaj_przedmiot('Niemiecki')
         assert_that(self.uczen.usun_przedmiot('Niemiecki')).contains_ignoring_case('Usu', 'PRZED')
 
+
+    def test_usun_przedmiot_error_1(self):
+        assert_that(self.uczen.usun_przedmiot).raises(TypeError).when_called_with(False)
+
+    def test_usun_przedmiot_error_2(self):
+        assert_that(self.uczen.usun_przedmiot).raises(ValueError).when_called_with('')
+
+    def test_usun_przedmiot_error_3(self):
+        assert_that(self.uczen.usun_przedmiot).raises(ValueError).when_called_with('Niemiecki')
+        
     def tearDown(self):
         self.uczen = None

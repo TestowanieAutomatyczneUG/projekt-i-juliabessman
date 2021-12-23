@@ -39,5 +39,9 @@ class UczenTest(unittest.TestCase):
         self.uczen.dodaj_przedmiot('Niemiecki')
         assert_that(self.uczen.edytuj_przedmiot('Niemiecki', 'Francuski')).is_equal_to_ignoring_case('Zmieniono PRZEDMIOT')
 
+    def test_edytuj_przedmiot_error(self, przedmiot, nowy_przedmiot, blad):
+        self.assertRaises(blad, self.uczen.edytuj_przedmiot, przedmiot, nowy_przedmiot)
+
+
     def tearDown(self):
         self.uczen = None

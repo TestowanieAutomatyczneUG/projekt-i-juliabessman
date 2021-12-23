@@ -60,6 +60,20 @@ class DziennikTest(unittest.TestCase):
         self.dziennik.dodaj_ucznia('Julia', 'Bessman')
         assert_that(self.dziennik.edytuj_ucznia('Julia', 'Bessman', 'Julia2', 'Bessman2'), starts_with('Dane ucznia zostały zaktualizowane'))
 
+    def test_edycja_ucznia_imie_nie(self):
+        assert_that(calling(self.dziennik.edytuj_ucznia).with_args('', 'Bessman', 'Juliaa', 'Bessmann'),
+                    raises(ValueError))
+    def test_edycja_ucznia_nowe_imie_nie(self):
+        assert_that(calling(self.dziennik.edytuj_ucznia).with_args('Julia', 'Bessman', '', 'Bessmann'),
+                    raises(ValueError))
+    def test_edycja_ucznia_nazwisko_nie(self):
+        assert_that(calling(self.dziennik.edytuj_ucznia).with_args('Julia', '', 'Juliaa', 'Bessmann'), raises(ValueError))
+
+    def test_edycja_ucznia_nowe_nazwisko_nie(self):
+        assert_that(calling(self.dziennik.edytuj_ucznia).with_args('Julia', 'Bessman', 'Juliaa', ''),
+                    raises(ValueError))
+
+   
 
     def tearDown(self):
         self.dziennik = None

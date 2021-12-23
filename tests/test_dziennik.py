@@ -110,5 +110,12 @@ class DziennikTest(unittest.TestCase):
         assert_that(self.dziennik.edytuj_przedmiot_ucznia('Julia', 'Bessman', 'Biologia', 'Angielski'),
                     starts_with('Edytowano przedmiot'))
 
-    
+    def test_edytuj_przedmiot_ucznia_imie_nie(self):
+        assert_that(calling(self.dziennik.edytuj_przedmiot_ucznia).with_args('', 'Bessman', 'Biologia', 'Angielski'),
+                    raises(ValueError))
 
+    def test_edytuj_przedmiot_ucznia_nazwisko_nie(self):
+        assert_that(calling(self.dziennik.edytuj_przedmiot_ucznia).with_args('Julia', '', 'Biologia', 'Angielski'),
+                    raises(ValueError))
+
+   

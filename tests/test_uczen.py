@@ -35,5 +35,9 @@ class UczenTest(unittest.TestCase):
         ('Przedmiot', 'Przedmiot', ValueError),
         ('Przedmiot', 'Przedmiot1', ValueError),
     ])
+    def test_edytuj_przedmiot(self):
+        self.uczen.dodaj_przedmiot('Niemiecki')
+        assert_that(self.uczen.edytuj_przedmiot('Niemiecki', 'Francuski')).is_equal_to_ignoring_case('Zmieniono PRZEDMIOT')
+
     def tearDown(self):
         self.uczen = None

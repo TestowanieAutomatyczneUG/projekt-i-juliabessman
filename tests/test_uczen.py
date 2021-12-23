@@ -88,5 +88,12 @@ class UczenTest(unittest.TestCase):
         ('', 0, 2, ValueError),
         ('Niemiecki', 0, 3, ValueError)
     ])
+    # custom matcher
+    def test_dodaj_uwage(self):
+        self.uczen.dodaj_uwage('Uwaga jest')
+        assert_that_hamcrest(True, is_(custom_matcher(self.uczen.lista_uwag[0])))
+
+
+
     def tearDown(self):
         self.uczen = None

@@ -106,6 +106,12 @@ class UczenTest(unittest.TestCase):
         self.uczen.edytuj_uwage(0, 'Nowa Uwaga')
         assert_that(self.uczen.lista_uwag[0]).is_not_equal_to('Uwaga')
 
+    @parameterized.expand([
+        (0, False, TypeError),
+        (0, '', ValueError),
+        (False, 'Nowa uwaga', TypeError),
+        (-1, 'Nowa uwaga', ValueError)
+    ])
 
     def tearDown(self):
         self.uczen = None

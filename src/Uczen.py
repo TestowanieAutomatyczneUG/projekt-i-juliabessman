@@ -108,3 +108,15 @@ class Uczen:
             if self.lista_przedmiotow[i].przedmiot == przedmiot:
                 return self.lista_przedmiotow[i].srednia()
         raise ValueError('Nie znaleziono przedmiotu')
+
+    def srednia(self):
+        suma_ocen = 0
+        ilosc_ocen = 0
+        for i in range(len(self.lista_przedmiotow)):
+            lista_ocen = self.lista_przedmiotow[i].oceny_z_przedmiotu
+            for ocena in lista_ocen:
+                suma_ocen += ocena
+                ilosc_ocen += 1
+        if ilosc_ocen == 0:
+            return 0
+        return suma_ocen / ilosc_ocen

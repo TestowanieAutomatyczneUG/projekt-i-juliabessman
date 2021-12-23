@@ -256,6 +256,14 @@ class DziennikTest(unittest.TestCase):
         assert_that(calling(self.dziennik.srednia_przedmiotu_ucznia).with_args('Julia', 'Bessman', 'Przyroda'),
                     raises(ValueError))
 
+    def test_srednia_imie_nie(self):
+        assert_that(calling(self.dziennik.srednia_przedmiotu_ucznia).with_args('', 'Bessman', 'Przyroda'),
+                    raises(ValueError))
+
+    def test_srednia_nazwisko_nie(self):
+        assert_that(calling(self.dziennik.srednia_przedmiotu_ucznia).with_args('Julia', '', 'Przyroda'),
+                    raises(ValueError))
+
     def tearDown(self):
         self.dziennik = None
 

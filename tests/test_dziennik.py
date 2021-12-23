@@ -192,3 +192,11 @@ class DziennikTest(unittest.TestCase):
         self.dziennik.dodaj_ocene_do_przedmiotu_ucznia('Julia', 'Bessman', 'Biologia', 6)
         assert_that(self.dziennik.edytuj_ocene_z_przedmiotu_ucznia('Julia', 'Bessman', 'Biologia', 0, 6),
                     starts_with('Edytowano ocene'))
+
+    def test_edytuj_ocene_ucznia_imie_nie(self):
+        assert_that(calling(self.dziennik.edytuj_ocene_z_przedmiotu_ucznia).with_args('', 'Bessman', 'Biologia', 0, 6),
+                    raises(ValueError))
+
+    def test_edytuj_ocene_ucznia_nazwisko_nie(self):
+        assert_that(calling(self.dziennik.edytuj_ocene_z_przedmiotu_ucznia).with_args('Julia', '', 'Biologia', 0, 6),
+                    raises(ValueError))

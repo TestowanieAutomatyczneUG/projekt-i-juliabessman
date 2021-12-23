@@ -42,6 +42,9 @@ class UczenTest(unittest.TestCase):
     def test_edytuj_przedmiot_error(self, przedmiot, nowy_przedmiot, blad):
         self.assertRaises(blad, self.uczen.edytuj_przedmiot, przedmiot, nowy_przedmiot)
 
+    def test_usun_przedmiot(self):
+        self.uczen.dodaj_przedmiot('Niemiecki')
+        assert_that(self.uczen.usun_przedmiot('Niemiecki')).contains_ignoring_case('Usu', 'PRZED')
 
     def tearDown(self):
         self.uczen = None

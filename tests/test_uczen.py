@@ -56,5 +56,12 @@ class UczenTest(unittest.TestCase):
     def test_usun_przedmiot_error_3(self):
         assert_that(self.uczen.usun_przedmiot).raises(ValueError).when_called_with('Niemiecki')
 
+    def test_dodaj_ocene_do_przedmiotu(self):
+        self.uczen.dodaj_przedmiot('Niemiecki')
+        assert_that(self.uczen.dodaj_ocene_do_przedmiotu('Niemiecki', 3)).contains_duplicates()
+
+
+
+
     def tearDown(self):
         self.uczen = None

@@ -60,8 +60,11 @@ class UczenTest(unittest.TestCase):
         self.uczen.dodaj_przedmiot('Niemiecki')
         assert_that(self.uczen.dodaj_ocene_do_przedmiotu('Niemiecki', 3)).contains_duplicates()
 
-
-
+    @parameterized.expand([
+        (True, 2, TypeError),
+        ('', 2, ValueError),
+        ('Niemiecki', 3, ValueError)
+    ])
 
     def tearDown(self):
         self.uczen = None

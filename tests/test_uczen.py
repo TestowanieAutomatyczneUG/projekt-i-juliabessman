@@ -121,5 +121,14 @@ class UczenTest(unittest.TestCase):
         self.uczen.dodaj_ocene_do_przedmiotu('Niemiecki', 3)
         assert_that(self.uczen.srednia_przedmiotu('Niemiecki')).is_in(4,-4)
 
+    def test_srednia_przedmiotu_error_1(self):
+        assert_that(self.uczen.srednia_przedmiotu).raises(TypeError).when_called_with(False)
+
+    def test_srednia_przedmiotu_error_2(self):
+        assert_that(self.uczen.srednia_przedmiotu).raises(ValueError).when_called_with('')
+
+    def test_srednia_przedmiotu_error_nie_istnieje(self):
+        assert_that(self.uczen.srednia_przedmiotu).raises(ValueError).when_called_with('Niemiecki')
+
     def tearDown(self):
         self.uczen = None

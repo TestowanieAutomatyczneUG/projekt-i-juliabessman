@@ -22,5 +22,10 @@ class UczenTest(unittest.TestCase):
     def test_dodaj_przedmiot_error_2(self):
         assert_that(self.uczen.dodaj_przedmiot).raises(ValueError).when_called_with('')
 
+    def test_wyswietl_liste_przedmiotow(self):
+        self.uczen.dodaj_przedmiot('Francuski')
+        self.uczen.dodaj_przedmiot('Niemiecki')
+        assert_that(self.uczen.wyswietl_liste_przedmiotow()).does_not_contain_duplicates()
+
     def tearDown(self):
         self.uczen = None

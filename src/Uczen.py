@@ -73,3 +73,12 @@ class Uczen:
                 self.lista_przedmiotow[i].edytuj_ocene(id_oceny, nowa_ocena)
                 return 'Edytowano ocene z przedmiotu'
         raise ValueError('Przedmiot nie istnieje')
+
+    def dodaj_uwage(self, uwaga):
+        if type(uwaga) is not str:
+            raise TypeError('Zmienna "uwaga" musi być typu string')
+
+        if len(uwaga) == 0:
+            raise ValueError('Nie podano uwagi, która chcemy przypisać')
+
+        self.lista_uwag.append(uwaga)

@@ -98,6 +98,8 @@ class UczenTest(unittest.TestCase):
         ('', ValueError),
     ])
 
-
+    def test_dodaj_uwage_error(self, uwaga, blad):
+        self.assertRaises(blad, self.uczen.dodaj_uwage, uwaga)
+        
     def tearDown(self):
         self.uczen = None

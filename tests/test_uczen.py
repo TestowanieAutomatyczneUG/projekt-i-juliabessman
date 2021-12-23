@@ -16,6 +16,11 @@ class UczenTest(unittest.TestCase):
         self.uczen.dodaj_przedmiot('Niemiecki')
         assert_that(self.uczen.lista_przedmiotow).is_not_none()
 
+    def test_dodaj_przedmiot_error_1(self):
+        assert_that(self.uczen.dodaj_przedmiot).raises(TypeError).when_called_with(False)
+
+    def test_dodaj_przedmiot_error_2(self):
+        assert_that(self.uczen.dodaj_przedmiot).raises(ValueError).when_called_with('')
 
     def tearDown(self):
         self.uczen = None

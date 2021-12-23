@@ -281,6 +281,11 @@ class DziennikTest(unittest.TestCase):
         assert_that(self.dziennik.srednia_ucznia('Julia', 'Bessman'),
                     less_than_or_equal_to(4))
 
+    def test_srednia_ogolna_imie_nie(self):
+        assert_that(calling(self.dziennik.srednia_ucznia).with_args('', 'Bessman'), raises(ValueError))
+
+    def test_srednia_ogolna_nazwisko_nie(self):
+        assert_that(calling(self.dziennik.srednia_ucznia).with_args('Julia', ''), raises(ValueError))
 
 
 

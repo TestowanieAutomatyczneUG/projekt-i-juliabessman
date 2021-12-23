@@ -211,6 +211,12 @@ class DziennikTest(unittest.TestCase):
         self.dziennik.dodaj_ucznia('Julia', 'Bessman')
         assert_that(self.dziennik.dodaj_uwage_do_ucznia('Julia', 'Bessman', 'Warning'), starts_with('Dodano'))
 
+    def test_uwaga_imie_nie(self):
+        assert_that(calling(self.dziennik.dodaj_uwage_do_ucznia).with_args('', 'Bessman', 'Warning'),
+                    raises(ValueError))
+
+    def test_uwaga_nazwisko_nie(self):
+        assert_that(calling(self.dziennik.dodaj_uwage_do_ucznia).with_args('Julia', '', 'Warning'), raises(ValueError))
 
 
     def tearDown(self):

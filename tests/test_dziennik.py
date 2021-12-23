@@ -46,7 +46,17 @@ class DziennikTest(unittest.TestCase):
         ('Julia', 1, TypeError),
         ('Julia', '', ValueError),
     ])
+    def test_usun_ucznia_error(self, imie, nazwisko, blad):
+        assert_that(calling(self.dziennik.usun_ucznia).with_args(
+            imie, nazwisko
+        ), raises(blad))
 
+    def test_usun_ucznia_nie_istnieje(self):
+        assert_that(calling(self.dziennik.usun_ucznia).with_args(
+            'Julia', 'Bessman'
+        ), raises(ValueError))
+
+    
 
     def tearDown(self):
         self.dziennik = None

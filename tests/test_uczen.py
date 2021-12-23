@@ -100,6 +100,12 @@ class UczenTest(unittest.TestCase):
 
     def test_dodaj_uwage_error(self, uwaga, blad):
         self.assertRaises(blad, self.uczen.dodaj_uwage, uwaga)
-        
+
+    def test_edytuj_uwage(self):
+        self.uczen.dodaj_uwage('Uwaga')
+        self.uczen.edytuj_uwage(0, 'Nowa Uwaga')
+        assert_that(self.uczen.lista_uwag[0]).is_not_equal_to('Uwaga')
+
+
     def tearDown(self):
         self.uczen = None

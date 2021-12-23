@@ -252,6 +252,10 @@ class DziennikTest(unittest.TestCase):
         assert_that(self.dziennik.srednia_przedmiotu_ucznia('Julia', 'Bessman', 'Przyroda'),
                     less_than_or_equal_to(4))
 
+    def test_srednia_przedmiot_nie_istnieje(self):
+        assert_that(calling(self.dziennik.srednia_przedmiotu_ucznia).with_args('Julia', 'Bessman', 'Przyroda'),
+                    raises(ValueError))
+
     def tearDown(self):
         self.dziennik = None
 

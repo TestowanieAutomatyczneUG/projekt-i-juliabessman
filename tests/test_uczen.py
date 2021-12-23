@@ -93,6 +93,10 @@ class UczenTest(unittest.TestCase):
         self.uczen.dodaj_uwage('Uwaga jest')
         assert_that_hamcrest(True, is_(custom_matcher(self.uczen.lista_uwag[0])))
 
+    @parameterized.expand([
+        (True, TypeError),
+        ('', ValueError),
+    ])
 
 
     def tearDown(self):

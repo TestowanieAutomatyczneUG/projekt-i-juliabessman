@@ -112,6 +112,8 @@ class UczenTest(unittest.TestCase):
         (False, 'Nowa uwaga', TypeError),
         (-1, 'Nowa uwaga', ValueError)
     ])
-
+    def test_edytuj_uwage_error(self, id_uwagi, uwaga, blad):
+        self.assertRaises(blad, self.uczen.edytuj_uwage, id_uwagi, uwaga)
+        
     def tearDown(self):
         self.uczen = None

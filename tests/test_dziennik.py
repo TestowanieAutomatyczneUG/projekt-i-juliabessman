@@ -118,4 +118,12 @@ class DziennikTest(unittest.TestCase):
         assert_that(calling(self.dziennik.edytuj_przedmiot_ucznia).with_args('Julia', '', 'Biologia', 'Angielski'),
                     raises(ValueError))
 
-   
+    def test_edytuj_przedmiot_ucznia_imie_niestr(self):
+        assert_that(calling(self.dziennik.edytuj_przedmiot_ucznia).with_args(3, 'Bessman', 'Biologia', 'Angielski'),
+                    raises(TypeError))
+
+    def test_edytuj_przedmiot_ucznia_nazwisko_niestr(self):
+        assert_that(calling(self.dziennik.edytuj_przedmiot_ucznia).with_args('Julia', 3, 'Biologia', 'Angielski'),
+                    raises(TypeError))
+
+

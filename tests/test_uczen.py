@@ -74,5 +74,11 @@ class UczenTest(unittest.TestCase):
         self.uczen.dodaj_ocene_do_przedmiotu('Niemiecki', 2)
         assert_that(self.uczen.edytuj_ocene_z_przedmiotu('Niemiecki', 0, 3)).is_in('Edytowano ocene z przedmiotu', 'Usuniete ocene z przedmiotu')
 
+    @parameterized.expand([
+        (True, 0, 2, TypeError),
+        ('', 0, 2, ValueError),
+        ('Niemiecki', 0, 3, ValueError)
+    ])
+    
     def tearDown(self):
         self.uczen = None

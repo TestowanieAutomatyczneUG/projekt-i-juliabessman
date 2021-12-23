@@ -10,7 +10,7 @@ class PrzedmiotTest(unittest.TestCase):
         self.przedmiot = Przedmiot('przedmiot')
 
     def test_dodaj_nowa_ocene(self):
-        file = open("../data/przedmiot_tests")
+        file = open("./data/przedmiot_tests")
         for line in file:
             ocena = int(line)
             self.przedmiot.dodaj_ocene(ocena)

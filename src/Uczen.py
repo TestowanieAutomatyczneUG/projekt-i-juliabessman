@@ -119,4 +119,4 @@ class Uczen:
                 ilosc_ocen += 1
         if ilosc_ocen == 0:
             return 0
-        return suma_ocen / ilosc_ocen
+        return suma_ocen/ilosc_ocen

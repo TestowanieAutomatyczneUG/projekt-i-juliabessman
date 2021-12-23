@@ -1,147 +1,284 @@
 import unittest
 
-from assertpy import *
-from hamcrest import assert_that as assert_that_hamcrest, is_
+from hamcrest import *
 from parameterized import parameterized
-
-from src.Uczen import Uczen
-from tests.matcher import custom_matcher
+from src.Dziennik import Dziennik
 
 
-class UczenTest(unittest.TestCase):
+class DziennikTest(unittest.TestCase):
     def setUp(self):
-        self.uczen = Uczen('Julia', 'Bessman')
+        self.dziennik = Dziennik()
 
-    def test_dodaj_przedmiot(self):
-        self.uczen.dodaj_przedmiot('Niemiecki')
-        assert_that(self.uczen.lista_przedmiotow).is_not_none()
+    def test_dodaj_ucznia(self):
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        assert_that(self.dziennik.lista_uczniow, has_length(1))
 
-    def test_dodaj_przedmiot_error_1(self):
-        assert_that(self.uczen.dodaj_przedmiot).raises(TypeError).when_called_with(False)
+    def test_dodaj_ucznia_error_1(self):
+        assert_that(calling(self.dziennik.dodaj_ucznia).with_args(True,'Bessman'), raises(TypeError))
 
-    def test_dodaj_przedmiot_error_2(self):
-        assert_that(self.uczen.dodaj_przedmiot).raises(ValueError).when_called_with('')
+    def test_dodaj_ucznia_error_2(self):
+        assert_that(calling(self.dziennik.dodaj_ucznia).with_args('Julia', True), raises(TypeError))
 
-    def test_wyswietl_liste_przedmiotow(self):
-        self.uczen.dodaj_przedmiot('Francuski')
-        self.uczen.dodaj_przedmiot('Niemiecki')
-        assert_that(self.uczen.wyswietl_liste_przedmiotow()).does_not_contain_duplicates()
+    def test_dodaj_ucznia_error_3(self):
+        assert_that(calling(self.dziennik.dodaj_ucznia).with_args('', 'Bessman'), raises(ValueError))
 
-    @parameterized.expand([
-        (True, 'Przedmiot', TypeError),
-        ('Przedmiot', True, TypeError),
-        ('Przedmiot', '', ValueError),
-        ('', 'Przedmiot', ValueError),
-        ('Przedmiot', 'Przedmiot', ValueError),
-        ('Przedmiot', 'Przedmiot1', ValueError),
-    ])
-    def test_edytuj_przedmiot_error(self, przedmiot, nowy_przedmiot, blad):
-        self.assertRaises(blad, self.uczen.edytuj_przedmiot, przedmiot, nowy_przedmiot)
+    def test_dodaj_ucznia_error_4(self):
+        assert_that(calling(self.dziennik.dodaj_ucznia).with_args('Julia', ''), raises(ValueError))
 
-    def test_edytuj_przedmiot(self):
-        self.uczen.dodaj_przedmiot('Niemiecki')
-        assert_that(self.uczen.edytuj_przedmiot('Niemiecki', 'Francuski')).is_equal_to_ignoring_case('Zmieniono PRZEDMIOT')
+    def test_dodaj_ucznia_error_istnieje(self):
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        assert_that(calling(self.dziennik.dodaj_ucznia).with_args('Julia', 'Bessman'), raises(ValueError))
 
-    def test_usun_przedmiot(self):
-        self.uczen.dodaj_przedmiot('Niemiecki')
-        assert_that(self.uczen.usun_przedmiot('Niemiecki')).contains_ignoring_case('Usu', 'PRZED')
+    def test_wyswietl_liste_uczniow_pusta_lista(self):
+        assert_that(self.dziennik.wyswietl_liste_uczniow(), empty())
 
-    def test_usun_przedmiot_error_1(self):
-        assert_that(self.uczen.usun_przedmiot).raises(TypeError).when_called_with(False)
+    def test_wyswietl_liste_uczniow_nie_pusta(self):
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        assert_that(self.dziennik.wyswietl_liste_uczniow()[0].imie, contains_string('Julia'))
 
-    def test_usun_przedmiot_error_2(self):
-        assert_that(self.uczen.usun_przedmiot).raises(ValueError).when_called_with('')
-
-    def test_usun_przedmiot_error_3(self):
-        assert_that(self.uczen.usun_przedmiot).raises(ValueError).when_called_with('Niemiecki')
-
-    def test_dodaj_ocene_do_przedmiotu(self):
-        self.uczen.dodaj_przedmiot('Niemiecki')
-        assert_that(self.uczen.dodaj_ocene_do_przedmiotu('Niemiecki', 3)).contains_duplicates()
+    def test_usun_ucznia(self):
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        assert_that(self.dziennik.usun_ucznia('Julia', 'Bessman'), starts_with('Uczeń o podanych'))
 
     @parameterized.expand([
-        (True, 2, TypeError),
-        ('', 2, ValueError),
-        ('Niemiecki', 3, ValueError)
+        (1, 'Bessman', TypeError),
+        ('', 'Bessman', ValueError),
+        ('Julia', 1, TypeError),
+        ('Julia', '', ValueError),
     ])
-    def test_dodaj_ocene_do_przedmiotu_error(self, przedmiot, ocena, blad):
-        self.assertRaises(blad, self.uczen.dodaj_ocene_do_przedmiotu, przedmiot, ocena)
+    def test_usun_ucznia_error(self, imie, nazwisko, blad):
+        assert_that(calling(self.dziennik.usun_ucznia).with_args(
+            imie, nazwisko
+        ), raises(blad))
 
-    def test_edytuj_ocene_z_przedmiotu(self):
-        self.uczen.dodaj_przedmiot('Niemiecki')
-        self.uczen.dodaj_ocene_do_przedmiotu('Niemiecki', 2)
-        assert_that(self.uczen.edytuj_ocene_z_przedmiotu('Niemiecki', 0, 3)).is_in('Edytowano ocene z przedmiotu', 'Usuniete ocene z przedmiotu')
+    def test_usun_ucznia_nie_istnieje(self):
+        assert_that(calling(self.dziennik.usun_ucznia).with_args(
+            'Julia', 'Bessman'
+        ), raises(ValueError))
 
-    @parameterized.expand([
-        (True, 0, 2, TypeError),
-        ('', 0, 2, ValueError),
-        ('Niemiecki', 0, 3, ValueError)
-    ])
-    def test_edytuj_ocene_z_przedmiotu_error(self, przedmiot, id_oceny, ocena, blad):
-        self.assertRaises(blad, self.uczen.edytuj_ocene_z_przedmiotu, przedmiot, id_oceny, ocena)
+    def test_srednia_przedmiotu_ucznia(self):
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        self.dziennik.dodaj_przedmiot_do_ucznia('Julia', 'Bessman',  'Przyroda')
+        self.dziennik.dodaj_ocene_do_przedmiotu_ucznia('Julia', 'Bessman', 'Przyroda', 2)
+        self.dziennik.dodaj_ocene_do_przedmiotu_ucznia('Julia', 'Bessman', 'Przyroda', 4)
+        self.dziennik.dodaj_ocene_do_przedmiotu_ucznia('Julia', 'Bessman', 'Przyroda', 6)
+        assert_that(self.dziennik.srednia_przedmiotu_ucznia('Julia', 'Bessman','Przyroda'),
+                    less_than_or_equal_to(4))
 
-    @parameterized.expand([
-        (True, 0, 2, TypeError),
-        ('', 0, 2, ValueError),
-        ('Niemiecki', 0, 3, ValueError)
-    ])
-    def test_edytuj_ocene_z_przedmiotu_error(self, przedmiot, id_oceny, ocena, blad):
-        self.assertRaises(blad, self.uczen.edytuj_ocene_z_przedmiotu, przedmiot, id_oceny, ocena)
+    def test_srednia_przedmiot_nie_istnieje(self):
+        assert_that(calling(self.dziennik.srednia_przedmiotu_ucznia).with_args('Julia', 'Bessman', 'Przyroda'), raises(ValueError))
+    def test_srednia_imie_nie(self):
+        assert_that(calling(self.dziennik.srednia_przedmiotu_ucznia).with_args('', 'Bessman', 'Przyroda'), raises(ValueError))
 
-    # custom matcher
+    def test_srednia_nazwisko_nie(self):
+        assert_that(calling(self.dziennik.srednia_przedmiotu_ucznia).with_args('Julia', '', 'Przyroda'), raises(ValueError))
+
+    def test_srednia_imie_niestr(self):
+        assert_that(calling(self.dziennik.srednia_przedmiotu_ucznia).with_args(3, 'Bessman', 'Przyroda'), raises(TypeError))
+
+    def test_srednia_nazwisko_niestr(self):
+        assert_that(calling(self.dziennik.srednia_przedmiotu_ucznia).with_args('Julia', 3, 'Przyroda'), raises(TypeError))
+
+    def test_srednia(self):
+
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        self.dziennik.dodaj_przedmiot_do_ucznia('Julia', 'Bessman', 'Przyroda')
+        self.dziennik.dodaj_ocene_do_przedmiotu_ucznia('Julia', 'Bessman', 'Przyroda', 2)
+        self.dziennik.dodaj_przedmiot_do_ucznia('Julia', 'Bessman', 'Angielski')
+        self.dziennik.dodaj_ocene_do_przedmiotu_ucznia('Julia', 'Bessman', 'Angielski', 4)
+        self.dziennik.dodaj_przedmiot_do_ucznia('Julia', 'Bessman', 'Matematyka')
+        self.dziennik.dodaj_ocene_do_przedmiotu_ucznia('Julia', 'Bessman', 'Matematyka', 6)
+        assert_that(self.dziennik.srednia_ucznia('Julia', 'Bessman'),
+                    less_than_or_equal_to(4))
+    def test_srednia_ogolna_imie_nie(self):
+        assert_that(calling(self.dziennik.srednia_ucznia).with_args('', 'Bessman'), raises(ValueError))
+
+    def test_srednia_ogolna_nazwisko_nie(self):
+        assert_that(calling(self.dziennik.srednia_ucznia).with_args('Julia', ''), raises(ValueError))
+
+    def test_srednia_ogolna_imie_niestr(self):
+        assert_that(calling(self.dziennik.srednia_ucznia).with_args(3, 'Bessman'), raises(TypeError))
+
+    def test_srednia_ogolna_nazwisko_niestr(self):
+        assert_that(calling(self.dziennik.srednia_ucznia).with_args('Julia', 3), raises(TypeError))
+
+
     def test_dodaj_uwage(self):
-        self.uczen.dodaj_uwage('Uwaga jest')
-        assert_that_hamcrest(True, is_(custom_matcher(self.uczen.lista_uwag[0])))
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        assert_that(self.dziennik.dodaj_uwage_do_ucznia('Julia', 'Bessman','Warning'), starts_with('Dodano'))
 
-    @parameterized.expand([
-        (True, TypeError),
-        ('', ValueError),
-    ])
-    def test_dodaj_uwage_error(self, uwaga, blad):
-        self.assertRaises(blad, self.uczen.dodaj_uwage, uwaga)
+    def test_uwaga_imie_nie(self):
+        assert_that(calling(self.dziennik.dodaj_uwage_do_ucznia).with_args('', 'Bessman', 'Warning'), raises(ValueError))
+
+    def test_uwaga_nazwisko_nie(self):
+        assert_that(calling(self.dziennik.dodaj_uwage_do_ucznia).with_args('Julia', '', 'Warning'), raises(ValueError))
+
+    def test_uwaga_imie_niestr(self):
+        assert_that(calling(self.dziennik.dodaj_uwage_do_ucznia).with_args(3, 'Bessman', 'Warning'), raises(TypeError))
+
+    def test_uwaga_nazwisko_niestr(self):
+        assert_that(calling(self.dziennik.dodaj_uwage_do_ucznia).with_args('Julia', 3, 'Warning'), raises(TypeError))
 
     def test_edytuj_uwage(self):
-        self.uczen.dodaj_uwage('Uwaga')
-        self.uczen.edytuj_uwage(0, 'Nowa Uwaga')
-        assert_that(self.uczen.lista_uwag[0]).is_not_equal_to('Uwaga')
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        self.dziennik.dodaj_uwage_do_ucznia('Julia', 'Bessman', 'Warning')
+        assert_that(self.dziennik.edytuj_uwage_ucznia('Julia', 'Bessman', 0, 'Nowa uwaga'), starts_with('Edytowano'))
+    def test_edycja_uwaga_imie_nie(self):
+        assert_that(calling(self.dziennik.dodaj_uwage_do_ucznia).with_args('', 'Bessman', 'Warning'), raises(ValueError))
 
-    @parameterized.expand([
-        (0, False, TypeError),
-        (0, '', ValueError),
-        (False, 'Nowa uwaga', TypeError),
-        (-1, 'Nowa uwaga', ValueError)
-    ])
-    def test_edytuj_uwage_error(self, id_uwagi, uwaga, blad):
-        self.assertRaises(blad, self.uczen.edytuj_uwage, id_uwagi, uwaga)
+    def test_edycja_uwaga_nazwisko_nie(self):
+        assert_that(calling(self.dziennik.dodaj_uwage_do_ucznia).with_args('Julia', '', 'Warning'), raises(ValueError))
 
-    def test_srednia_przedmiotu(self):
-        self.uczen.dodaj_przedmiot('Niemiecki')
-        self.uczen.dodaj_ocene_do_przedmiotu('Niemiecki', 5)
-        self.uczen.dodaj_ocene_do_przedmiotu('Niemiecki', 3)
-        assert_that(self.uczen.srednia_przedmiotu('Niemiecki')).is_in(4,-4)
+    def test_edycja_uwaga_imie_niestr(self):
+        assert_that(calling(self.dziennik.dodaj_uwage_do_ucznia).with_args(3, 'Bessman', 'Warning'), raises(TypeError))
 
-    def test_srednia_przedmiotu_error_1(self):
-        assert_that(self.uczen.srednia_przedmiotu).raises(TypeError).when_called_with(False)
+    def test_edycja_uwaga_nazwisko_niestr(self):
+        assert_that(calling(self.dziennik.dodaj_uwage_do_ucznia).with_args('Julia', 3, 'Warning'), raises(TypeError))
 
-    def test_srednia_przedmiotu_error_2(self):
-        assert_that(self.uczen.srednia_przedmiotu).raises(ValueError).when_called_with('')
+    def test_edytuj_ucznia(self):
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        assert_that(self.dziennik.edytuj_ucznia('Julia', 'Bessman', 'Julia2', 'Bessman2'), starts_with('Dane ucznia zostały zaktualizowane'))
 
-    def test_srednia_przedmiotu_error_nie_istnieje(self):
-        assert_that(self.uczen.srednia_przedmiotu).raises(ValueError).when_called_with('Niemiecki')
+    def test_edycja_ucznia_imie_nie(self):
+        assert_that(calling(self.dziennik.edytuj_ucznia).with_args('', 'Bessman', 'Juliaa', 'Bessmann'),
+                    raises(ValueError))
+    def test_edycja_ucznia_nowe_imie_nie(self):
+        assert_that(calling(self.dziennik.edytuj_ucznia).with_args('Julia', 'Bessman', '', 'Bessmann'),
+                    raises(ValueError))
+    def test_edycja_ucznia_nazwisko_nie(self):
+        assert_that(calling(self.dziennik.edytuj_ucznia).with_args('Julia', '', 'Juliaa', 'Bessmann'), raises(ValueError))
 
-    def test_srednia_ucznia(self):
-        self.uczen.dodaj_przedmiot('Niemiecki')
-        self.uczen.dodaj_ocene_do_przedmiotu('Niemiecki', 5)
-        self.uczen.dodaj_ocene_do_przedmiotu('Niemiecki', 3)
+    def test_edycja_ucznia_nowe_nazwisko_nie(self):
+        assert_that(calling(self.dziennik.edytuj_ucznia).with_args('Julia', 'Bessman', 'Juliaa', ''),
+                    raises(ValueError))
 
-        self.uczen.dodaj_przedmiot('Francuski')
-        self.uczen.dodaj_ocene_do_przedmiotu('Francuski', 2)
-        self.uczen.dodaj_ocene_do_przedmiotu('Francuski', 4)
+    def test_edycja_ucznia_imie_niestr(self):
+        assert_that(calling(self.dziennik.edytuj_ucznia).with_args(3,'Bessman', 'Juliaa', 'Bessmann'), raises(TypeError))
 
-        assert_that(self.uczen.srednia()).is_equal_to(3.5)
+    def test_edycja_ucznia_nazwisko_niestr(self):
+        assert_that(calling(self.dziennik.edytuj_ucznia).with_args('Julia', 3, 'Juliaa', 'Bessmann'), raises(TypeError))
 
-    def test_srednia_ucznia_0(self):
-        assert_that(self.uczen.srednia()).is_zero()
+    def test_edycja_ucznia_nowe_nazwisko_niestr(self):
+        assert_that(calling(self.dziennik.edytuj_ucznia).with_args('Julia', 'Bessman', 'Juliaa', 3), raises(TypeError))
+    def test_edycja_ucznia_nowe_imie_niestr(self):
+        assert_that(calling(self.dziennik.edytuj_ucznia).with_args('Julia', 3, 'Juliaa', 'Bessmann'), raises(TypeError))
+
+    def test_dodaj_przedmiot_ucznia(self):
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        assert_that(self.dziennik.dodaj_przedmiot_do_ucznia('Julia', 'Bessman', 'Biologia'),
+                    starts_with('Dodano przedmiot'))
+    def test_dadaj_przedmiot_ucznia_imie_nie(self):
+        assert_that(calling(self.dziennik.dodaj_przedmiot_do_ucznia).with_args('', 'Bessman',  'Biologia'),
+                    raises(ValueError))
+    def test_dodaj_przedmiot_ucznia_nazwisko_nie(self):
+        assert_that(calling(self.dziennik.dodaj_przedmiot_do_ucznia).with_args('Julia', '', 'Biologia'), raises(ValueError))
+
+
+    def test_dodaj_przedmiot_ucznia_imie_niestr(self):
+        assert_that(calling(self.dziennik.dodaj_ucznia).with_args(3,'Bessman', 'Biologia'), raises(TypeError))
+
+    def test_dodaj_przedmiot_ucznia_nazwisko_niestr(self):
+        assert_that(calling(self.dziennik.dodaj_przedmiot_do_ucznia).with_args('Julia', 3, 'Biologia'), raises(TypeError))
+
+    def test_edytuj_przedmiot_ucznia(self):
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        self.dziennik.dodaj_przedmiot_do_ucznia('Julia', 'Bessman','Biologia')
+        assert_that(self.dziennik.edytuj_przedmiot_ucznia('Julia', 'Bessman', 'Biologia', 'Angielski'),
+                    starts_with('Edytowano przedmiot'))
+
+    def test_edytuj_przedmiot_ucznia_imie_nie(self):
+        assert_that(calling(self.dziennik.edytuj_przedmiot_ucznia).with_args('', 'Bessman', 'Biologia', 'Angielski'),
+                    raises(ValueError))
+
+    def test_edytuj_przedmiot_ucznia_nazwisko_nie(self):
+        assert_that(calling(self.dziennik.edytuj_przedmiot_ucznia).with_args('Julia', '', 'Biologia', 'Angielski'),
+                    raises(ValueError))
+
+    def test_edytuj_przedmiot_ucznia_imie_niestr(self):
+        assert_that(calling(self.dziennik.edytuj_przedmiot_ucznia).with_args(3, 'Bessman', 'Biologia', 'Angielski'), raises(TypeError))
+
+    def test_edytuj_przedmiot_ucznia_nazwisko_niestr(self):
+        assert_that(calling(self.dziennik.edytuj_przedmiot_ucznia).with_args('Julia', 3, 'Biologia', 'Angielski'),
+                    raises(TypeError))
+    def test_edytuj_przedmiot_nie_istnieje(self):
+        assert_that(calling(self.dziennik.edytuj_przedmiot_ucznia).with_args(
+            'Julia', 'Bessman', 0, 'Angielski'
+        ), raises(ValueError))
+    def test_usun_przedmiot_ucznia(self):
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        self.dziennik.dodaj_przedmiot_do_ucznia('Julia', 'Bessman','Biologia')
+        assert_that(self.dziennik.usun_przedmiot_do_ucznia('Julia', 'Bessman', 'Biologia'),
+                    starts_with('Usunieto przedmiot'))
+
+    def test_usun_przedmiot_ucznia_imie_nie(self):
+        assert_that(calling(self.dziennik.usun_przedmiot_do_ucznia).with_args('', 'Bessman', 'Biologia'),
+                    raises(ValueError))
+
+    def test_usun_przedmiot_ucznia_nazwisko_nie(self):
+        assert_that(calling(self.dziennik.usun_przedmiot_do_ucznia).with_args('Julia', '', 'Biologia'),
+                    raises(ValueError))
+
+    def test_usun_przedmiot_ucznia_imie_niestr(self):
+        assert_that(calling(self.dziennik.usun_przedmiot_do_ucznia).with_args(3, 'Bessman', 'Biologia'), raises(TypeError))
+
+    def test_usun_przedmiot_ucznia_nazwisko_niestr(self):
+        assert_that(calling(self.dziennik.usun_przedmiot_do_ucznia).with_args('Julia', 3, 'Biologia'),
+             raises(TypeError))
+
+    def test_usun_przedmiot_ucznia_nie_istnieje(self):
+        assert_that(calling(self.dziennik.usun_przedmiot_do_ucznia).with_args(
+            'Julia', 'Bessman', 'Francuski')
+            ,
+            raises(ValueError))
+
+    def test_dodaj_ocene_ucznia(self):
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        self.dziennik.dodaj_przedmiot_do_ucznia('Julia', 'Bessman','Biologia')
+        assert_that(self.dziennik.dodaj_ocene_do_przedmiotu_ucznia('Julia', 'Bessman', 'Biologia', 6),
+                    starts_with('Dodano ocene'))
+
+    def test_dodaj_ocene_ucznia_imie_nie(self):
+        assert_that(calling(self.dziennik.dodaj_ocene_do_przedmiotu_ucznia).with_args('', 'Bessman', 'Biologia', 6),
+                    raises(ValueError))
+
+    def test_dodaj_ocene_ucznia_nazwisko_nie(self):
+        assert_that(calling(self.dziennik.dodaj_ocene_do_przedmiotu_ucznia).with_args('Julia', '', 'Biologia', 6),
+                    raises(ValueError))
+
+    def test_dodaj_ocene_ucznia_imie_niestr(self):
+        assert_that(calling(self.dziennik.dodaj_ocene_do_przedmiotu_ucznia).with_args(3, 'Bessman', 'Biologia', 6), raises(TypeError))
+
+    def test_dodaj_ocene_ucznia_nazwisko_niestr(self):
+        assert_that(calling(self.dziennik.dodaj_ocene_do_przedmiotu_ucznia).with_args('Julia', 3, 'Biologia', 6),
+                    raises(TypeError))
+
+    def test_dodaj_ocene_ucznia_nie_istnieje(self):
+        assert_that(calling(self.dziennik.dodaj_ocene_do_przedmiotu_ucznia).with_args(
+            'Julia', 'Bessman', 'Francuski', 6)
+            ,
+            raises(ValueError))
+    def test_edytuj_ocene_ucznia(self):
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        self.dziennik.dodaj_przedmiot_do_ucznia('Julia', 'Bessman','Biologia')
+        self.dziennik.dodaj_ocene_do_przedmiotu_ucznia('Julia', 'Bessman','Biologia',6)
+        assert_that(self.dziennik.edytuj_ocene_z_przedmiotu_ucznia('Julia', 'Bessman', 'Biologia', 0,6),
+                    starts_with('Edytowano ocene'))
+
+    def test_edytuj_ocene_ucznia_imie_nie(self):
+        assert_that(calling(self.dziennik.edytuj_ocene_z_przedmiotu_ucznia).with_args('', 'Bessman', 'Biologia', 0, 6),
+                    raises(ValueError))
+
+    def test_edytuj_ocene_ucznia_nazwisko_nie(self):
+        assert_that(calling(self.dziennik.edytuj_ocene_z_przedmiotu_ucznia).with_args('Julia', '', 'Biologia',0, 6),
+                    raises(ValueError))
+
+    def test_edytuj_ocene_ucznia_imie_niestr(self):
+        assert_that(calling(self.dziennik.edytuj_ocene_z_przedmiotu_ucznia).with_args(3, 'Bessman', 'Biologia', 0, 6), raises(TypeError))
+
+    def test_edytuj_ocene_ucznia_nazwisko_niestr(self):
+        assert_that(calling(self.dziennik.edytuj_ocene_z_przedmiotu_ucznia).with_args('Julia', 3, 'Biologia',0,  6),
+                    raises(TypeError))
 
     def tearDown(self):
-        self.uczen = None
+        self.dziennik = None
+

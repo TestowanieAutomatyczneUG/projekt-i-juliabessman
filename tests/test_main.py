@@ -20,11 +20,9 @@ class MainTest(unittest.TestCase):
         assert_that(zapisz_jako_csv(self.dziennik, True), equal_to('Zapisano'))
         os.remove('wyjscie-test.csv')
 
-    @patch('builtins.input', side_effect=['../test.csv'])
+    @patch('builtins.input', side_effect=['./test.csv'])
     def test_get_from_csv(self, mock_input):
         assert_that(pobierz_csv(self.dziennik), not_none())
-
-
 
     def tearDown(self) -> None:
         self.dziennik = None

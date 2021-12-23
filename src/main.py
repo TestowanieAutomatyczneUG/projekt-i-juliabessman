@@ -1,3 +1,4 @@
+from src.Dziennik import Dziennik
 import csv
 
 def zapisz_jako_csv(dziennik, test=False):
@@ -17,6 +18,7 @@ def zapisz_jako_csv(dziennik, test=False):
             e_journal_writer.writerow([student.imie, student.nazwisko, subjects,
                                        student.lista_uwag])
     return 'Zapisano'
+
 
 def pobierz_csv(dziennik):
 

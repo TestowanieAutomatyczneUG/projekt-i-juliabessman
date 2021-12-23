@@ -10,7 +10,6 @@ class Przedmiot:
             raise ValueError('Ocena musi mieścić się w przedziale od 1 do 6')
         self.oceny_z_przedmiotu.append(nowa_ocena)
 
-
     def edytuj_ocene(self, id_oceny, nowa_ocena):
         if type(nowa_ocena) is not int:
             raise TypeError('Podany format oceny jest nieprawidłowy')

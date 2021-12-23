@@ -179,3 +179,9 @@ class DziennikTest(unittest.TestCase):
     def test_dodaj_ocene_ucznia_nazwisko_niestr(self):
         assert_that(calling(self.dziennik.dodaj_ocene_do_przedmiotu_ucznia).with_args('Julia', 3, 'Biologia', 6),
                     raises(TypeError))
+
+    def test_dodaj_ocene_ucznia_nie_istnieje(self):
+        assert_that(calling(self.dziennik.dodaj_ocene_do_przedmiotu_ucznia).with_args(
+            'Julia', 'Bessman', 'Francuski', 6)
+            ,
+            raises(ValueError))

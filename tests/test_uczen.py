@@ -142,5 +142,8 @@ class UczenTest(unittest.TestCase):
 
         assert_that(self.uczen.srednia()).is_equal_to(3.5)
 
+    def test_srednia_ucznia_0(self):
+        assert_that(self.uczen.srednia()).is_zero()
+        
     def tearDown(self):
         self.uczen = None

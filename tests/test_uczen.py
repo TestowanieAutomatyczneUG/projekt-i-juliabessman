@@ -55,6 +55,6 @@ class UczenTest(unittest.TestCase):
 
     def test_usun_przedmiot_error_3(self):
         assert_that(self.uczen.usun_przedmiot).raises(ValueError).when_called_with('Niemiecki')
-        
+
     def tearDown(self):
         self.uczen = None

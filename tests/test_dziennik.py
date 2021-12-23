@@ -104,3 +104,11 @@ class DziennikTest(unittest.TestCase):
     def tearDown(self):
         self.dziennik = None
 
+    def test_edytuj_przedmiot_ucznia(self):
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        self.dziennik.dodaj_przedmiot_do_ucznia('Julia', 'Bessman', 'Biologia')
+        assert_that(self.dziennik.edytuj_przedmiot_ucznia('Julia', 'Bessman', 'Biologia', 'Angielski'),
+                    starts_with('Edytowano przedmiot'))
+
+    
+

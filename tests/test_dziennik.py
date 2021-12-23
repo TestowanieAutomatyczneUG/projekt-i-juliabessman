@@ -32,7 +32,9 @@ class DziennikTest(unittest.TestCase):
     def test_wyswietl_liste_uczniow_pusta_lista(self):
         assert_that(self.dziennik.wyswietl_liste_uczniow(), empty())
 
-    
+    def test_wyswietl_liste_uczniow_nie_pusta(self):
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        assert_that(self.dziennik.wyswietl_liste_uczniow()[0].imie, contains_string('Julia'))
 
 
     def tearDown(self):

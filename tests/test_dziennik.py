@@ -270,6 +270,24 @@ class DziennikTest(unittest.TestCase):
     def test_srednia_nazwisko_niestr(self):
         assert_that(calling(self.dziennik.srednia_przedmiotu_ucznia).with_args('Julia', 3, 'Przyroda'), raises(TypeError))
 
+    def test_srednia(self):
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        self.dziennik.dodaj_przedmiot_do_ucznia('Julia', 'Bessman', 'Przyroda')
+        self.dziennik.dodaj_ocene_do_przedmiotu_ucznia('Julia', 'Bessman', 'Przyroda', 2)
+        self.dziennik.dodaj_przedmiot_do_ucznia('Julia', 'Bessman', 'Angielski')
+        self.dziennik.dodaj_ocene_do_przedmiotu_ucznia('Julia', 'Bessman', 'Angielski', 4)
+        self.dziennik.dodaj_przedmiot_do_ucznia('Julia', 'Bessman', 'Matematyka')
+        self.dziennik.dodaj_ocene_do_przedmiotu_ucznia('Julia', 'Bessman', 'Matematyka', 6)
+        assert_that(self.dziennik.srednia_ucznia('Julia', 'Bessman'),
+                    less_than_or_equal_to(4))
+
+
+
+
+
+
+
+
     def tearDown(self):
         self.dziennik = None
 

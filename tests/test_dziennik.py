@@ -164,3 +164,11 @@ class DziennikTest(unittest.TestCase):
         self.dziennik.dodaj_przedmiot_do_ucznia('Julia', 'Bessman', 'Biologia')
         assert_that(self.dziennik.dodaj_ocene_do_przedmiotu_ucznia('Julia', 'Bessman', 'Biologia', 6),
                     starts_with('Dodano ocene'))
+
+    def test_dodaj_ocene_ucznia_imie_nie(self):
+        assert_that(calling(self.dziennik.dodaj_ocene_do_przedmiotu_ucznia).with_args('', 'Bessman', 'Biologia', 6),
+                    raises(ValueError))
+
+    def test_dodaj_ocene_ucznia_nazwisko_nie(self):
+        assert_that(calling(self.dziennik.dodaj_ocene_do_przedmiotu_ucznia).with_args('Julia', '', 'Biologia', 6),
+                    raises(ValueError))

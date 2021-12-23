@@ -36,7 +36,8 @@ class DziennikTest(unittest.TestCase):
         self.dziennik.dodaj_ucznia('Julia', 'Bessman')
         assert_that(self.dziennik.wyswietl_liste_uczniow()[0].imie, contains_string('Julia'))
 
+    def test_usun_ucznia(self):
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        assert_that(self.dziennik.usun_ucznia('Julia', 'Bessman'), starts_with('Uczeń o podanych'))
 
-    def tearDown(self):
-        self.dziennik = None
-
+   

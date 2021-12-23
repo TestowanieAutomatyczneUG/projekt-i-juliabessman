@@ -83,5 +83,10 @@ class UczenTest(unittest.TestCase):
     def test_edytuj_ocene_z_przedmiotu_error(self, przedmiot, id_oceny, ocena, blad):
         self.assertRaises(blad, self.uczen.edytuj_ocene_z_przedmiotu, przedmiot, id_oceny, ocena)
 
+    @parameterized.expand([
+        (True, 0, 2, TypeError),
+        ('', 0, 2, ValueError),
+        ('Niemiecki', 0, 3, ValueError)
+    ])
     def tearDown(self):
         self.uczen = None

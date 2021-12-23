@@ -17,3 +17,6 @@ class Uczen:
 
         przedmiot = Przedmiot(nowy_przedmiot)
         self.lista_przedmiotow.append(przedmiot)
+
+    def wyswietl_liste_przedmiotow(self):
+        return self.lista_przedmiotow

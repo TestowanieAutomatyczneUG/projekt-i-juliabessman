@@ -24,5 +24,11 @@ class PrzedmiotTest(unittest.TestCase):
     def test_dodaj_nowa_ocene_errors(self, ocena, blad):
         self.assertRaises(blad, self.przedmiot.dodaj_ocene, ocena)
 
+    def test_srednia(self):
+        self.przedmiot.dodaj_ocene(4)
+        self.przedmiot.dodaj_ocene(2)
+        self.assertEqual(self.przedmiot.srednia(), 3)
+
+        
     def tearDown(self):
         self.przedmiot = None

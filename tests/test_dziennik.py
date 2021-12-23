@@ -101,8 +101,6 @@ class DziennikTest(unittest.TestCase):
     def test_dodaj_przedmiot_ucznia_nazwisko_niestr(self):
         assert_that(calling(self.dziennik.dodaj_przedmiot_do_ucznia).with_args('Julia', 3, 'Biologia'), raises(TypeError))
 
-    def tearDown(self):
-        self.dziennik = None
 
     def test_edytuj_przedmiot_ucznia(self):
         self.dziennik.dodaj_ucznia('Julia', 'Bessman')
@@ -200,3 +198,17 @@ class DziennikTest(unittest.TestCase):
     def test_edytuj_ocene_ucznia_nazwisko_nie(self):
         assert_that(calling(self.dziennik.edytuj_ocene_z_przedmiotu_ucznia).with_args('Julia', '', 'Biologia', 0, 6),
                     raises(ValueError))
+
+    def test_edytuj_ocene_ucznia_imie_niestr(self):
+        assert_that(calling(self.dziennik.edytuj_ocene_z_przedmiotu_ucznia).with_args(3, 'Bessman', 'Biologia', 0, 6),
+                    raises(TypeError))
+
+    def test_edytuj_ocene_ucznia_nazwisko_niestr(self):
+        assert_that(calling(self.dziennik.edytuj_ocene_z_przedmiotu_ucznia).with_args('Julia', 3, 'Biologia', 0, 6),
+                    raises(TypeError))
+
+    def tearDown(self):
+        self.dziennik = None
+
+
+

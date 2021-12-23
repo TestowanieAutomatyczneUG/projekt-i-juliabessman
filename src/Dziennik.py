@@ -131,3 +131,4 @@ class Dziennik:
                 self.lista_uczniow[i].dodaj_ocene_do_przedmiotu(przedmiot, ocena)
                 return 'Dodano ocene do przedmiotu ucznia'
         raise ValueError('Nie ma takiego ucznia w bazie')
+

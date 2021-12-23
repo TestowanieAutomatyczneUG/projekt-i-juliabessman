@@ -126,4 +126,7 @@ class DziennikTest(unittest.TestCase):
         assert_that(calling(self.dziennik.edytuj_przedmiot_ucznia).with_args('Julia', 3, 'Biologia', 'Angielski'),
                     raises(TypeError))
 
-
+    def test_edytuj_przedmiot_nie_istnieje(self):
+        assert_that(calling(self.dziennik.edytuj_przedmiot_ucznia).with_args(
+            'Julia', 'Bessman', 0, 'Angielski'
+        ), raises(ValueError))

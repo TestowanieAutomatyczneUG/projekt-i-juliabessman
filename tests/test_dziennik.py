@@ -73,7 +73,18 @@ class DziennikTest(unittest.TestCase):
         assert_that(calling(self.dziennik.edytuj_ucznia).with_args('Julia', 'Bessman', 'Juliaa', ''),
                     raises(ValueError))
 
-   
+    def test_edycja_ucznia_imie_niestr(self):
+        assert_that(calling(self.dziennik.edytuj_ucznia).with_args(3, 'Bessman', 'Juliaa', 'Bessmann'),
+                    raises(TypeError))
+
+    def test_edycja_ucznia_nazwisko_niestr(self):
+        assert_that(calling(self.dziennik.edytuj_ucznia).with_args('Julia', 3, 'Juliaa', 'Bessmann'), raises(TypeError))
+
+    def test_edycja_ucznia_nowe_nazwisko_niestr(self):
+        assert_that(calling(self.dziennik.edytuj_ucznia).with_args('Julia', 'Bessman', 'Juliaa', 3), raises(TypeError))
+
+    def test_edycja_ucznia_nowe_imie_niestr(self):
+        assert_that(calling(self.dziennik.edytuj_ucznia).with_args('Julia', 3, 'Juliaa', 'Bessmann'), raises(TypeError))
 
     def tearDown(self):
         self.dziennik = None

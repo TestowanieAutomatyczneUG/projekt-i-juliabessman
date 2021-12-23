@@ -97,3 +97,14 @@ class Uczen:
             raise ValueError('Id uwagi sie nie zgadza')
 
         self.lista_uwag[id_uwagi] = nowa_uwaga
+
+    def srednia_przedmiotu(self, przedmiot):
+        if type(przedmiot) is not str:
+            raise TypeError('Zmienna "nowy_przedmiot" musi być typu string')
+        if len(przedmiot) == 0:
+            raise ValueError('Nie podano przedmiuotu, który chcemy przypisać')
+
+        for i in range(len(self.lista_przedmiotow)):
+            if self.lista_przedmiotow[i].przedmiot == przedmiot:
+                return self.lista_przedmiotow[i].srednia()
+        raise ValueError('Nie znaleziono przedmiotu')

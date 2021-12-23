@@ -21,3 +21,6 @@ class Dziennik:
         uczen = Uczen(imie, nazwisko)
 
         self.lista_uczniow.append(uczen)
+
+    def wyswietl_liste_uczniow(self):
+        return self.lista_uczniow

@@ -152,4 +152,10 @@ class DziennikTest(unittest.TestCase):
     def test_usun_przedmiot_ucznia_nazwisko_niestr(self):
         assert_that(calling(self.dziennik.usun_przedmiot_do_ucznia).with_args('Julia', 3, 'Biologia'),
              raises(TypeError))
+
+    def test_usun_przedmiot_ucznia_nie_istnieje(self):
+        assert_that(calling(self.dziennik.usun_przedmiot_do_ucznia).with_args(
+            'Julia', 'Bessman', 'Francuski')
+            ,
+            raises(ValueError))
         

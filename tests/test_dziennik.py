@@ -288,7 +288,11 @@ class DziennikTest(unittest.TestCase):
         assert_that(calling(self.dziennik.srednia_ucznia).with_args('Julia', ''), raises(ValueError))
 
 
+    def test_srednia_ogolna_imie_niestr(self):
+        assert_that(calling(self.dziennik.srednia_ucznia).with_args(3, 'Bessman'), raises(TypeError))
 
+    def test_srednia_ogolna_nazwisko_niestr(self):
+        assert_that(calling(self.dziennik.srednia_ucznia).with_args('Julia', 3), raises(TypeError))
 
 
 

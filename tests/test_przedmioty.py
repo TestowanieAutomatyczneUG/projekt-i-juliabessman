@@ -17,5 +17,11 @@ class PrzedmiotTest(unittest.TestCase):
         self.assertEqual(len(self.przedmiot.oceny_z_przedmiotu), 3)
         file.close()
 
+    @parameterized.expand([
+        (True, TypeError),
+        (-1, ValueError)
+    ])
+   
+
     def tearDown(self):
         self.przedmiot = None

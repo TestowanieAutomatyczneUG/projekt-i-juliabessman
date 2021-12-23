@@ -65,6 +65,8 @@ class UczenTest(unittest.TestCase):
         ('', 2, ValueError),
         ('Niemiecki', 3, ValueError)
     ])
+    def test_dodaj_ocene_do_przedmiotu_error(self, przedmiot, ocena, blad):
+        self.assertRaises(blad, self.uczen.dodaj_ocene_do_przedmiotu, przedmiot, ocena)
 
     def tearDown(self):
         self.uczen = None

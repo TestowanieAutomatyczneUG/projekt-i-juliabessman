@@ -112,3 +112,22 @@ class Dziennik:
                 self.lista_uczniow[i].usun_przedmiot(przedmiot)
                 return 'Usunieto przedmiot do ucznia'
         raise ValueError('Nie ma takiego ucznia w bazie')
+
+
+    def dodaj_ocene_do_przedmiotu_ucznia(self, imie, nazwisko, przedmiot, ocena):
+        if type(imie) is not str:
+            raise TypeError('Zmienna "imię" musi być typu string')
+        if type(nazwisko) is not str:
+            raise TypeError('Zmienna "nazwisko" musi być typu string')
+        if len(imie) == 0:
+            raise ValueError('Nie podano imienia')
+        if len(imie) == 0:
+            raise ValueError('Nie podano imienia')
+        if len(nazwisko) == 0:
+            raise ValueError('Nie podano nazwiska')
+
+        for i in range(len(self.lista_uczniow)):
+            if self.lista_uczniow[i].imie == imie and self.lista_uczniow[i].nazwisko == nazwisko:
+                self.lista_uczniow[i].dodaj_ocene_do_przedmiotu(przedmiot, ocena)
+                return 'Dodano ocene do przedmiotu ucznia'
+        raise ValueError('Nie ma takiego ucznia w bazie')

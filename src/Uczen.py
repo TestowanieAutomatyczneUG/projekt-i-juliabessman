@@ -82,3 +82,18 @@ class Uczen:
             raise ValueError('Nie podano uwagi, która chcemy przypisać')
 
         self.lista_uwag.append(uwaga)
+
+    def edytuj_uwage(self, id_uwagi, nowa_uwaga):
+        if type(nowa_uwaga) is not str:
+            raise TypeError('Zmienna "nowa_uwaga" musi być typu string')
+
+        if len(nowa_uwaga) == 0:
+            raise ValueError('Nie podano uwagi, która chcemy przypisać')
+
+        if type(id_uwagi) is not int:
+            raise TypeError('Podany format id oceny jest nieprawidłowy')
+
+        if id_uwagi < 0 or id_uwagi >= len(self.lista_uwag):
+            raise ValueError('Id uwagi sie nie zgadza')
+
+        self.lista_uwag[id_uwagi] = nowa_uwaga

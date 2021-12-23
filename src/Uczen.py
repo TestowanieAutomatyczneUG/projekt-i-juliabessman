@@ -61,3 +61,15 @@ class Uczen:
                 self.lista_przedmiotow[i].dodaj_ocene(ocena)
                 return 'Dodano ocene do przedmiotu'
         raise ValueError('Przedmiot nie istnieje')
+
+    def edytuj_ocene_z_przedmiotu(self, przedmiot, id_oceny, nowa_ocena):
+        if type(przedmiot) is not str:
+            raise TypeError('Zmienna "nowy_przedmiot" musi być typu string')
+        if len(przedmiot) == 0:
+            raise ValueError('Nie podano przedmiuotu, który chcemy przypisać')
+
+        for i in range(len(self.lista_przedmiotow)):
+            if self.lista_przedmiotow[i].przedmiot == przedmiot:
+                self.lista_przedmiotow[i].edytuj_ocene(id_oceny, nowa_ocena)
+                return 'Edytowano ocene z przedmiotu'
+        raise ValueError('Przedmiot nie istnieje')

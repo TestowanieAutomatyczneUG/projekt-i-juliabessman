@@ -207,6 +207,12 @@ class DziennikTest(unittest.TestCase):
         assert_that(calling(self.dziennik.edytuj_ocene_z_przedmiotu_ucznia).with_args('Julia', 3, 'Biologia', 0, 6),
                     raises(TypeError))
 
+    def test_dodaj_uwage(self):
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        assert_that(self.dziennik.dodaj_uwage_do_ucznia('Julia', 'Bessman', 'Warning'), starts_with('Dodano'))
+
+
+
     def tearDown(self):
         self.dziennik = None
 

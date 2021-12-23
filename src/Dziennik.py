@@ -200,3 +200,19 @@ class Dziennik:
             if self.lista_uczniow[i].imie == imie and self.lista_uczniow[i].nazwisko == nazwisko:
                 return self.lista_uczniow[i].srednia_przedmiotu(przedmiot)
         raise ValueError('Brak ucznia o podanych danych')
+
+    def srednia_ucznia(self, imie, nazwisko):
+        if type(imie) is not str:
+            raise TypeError('Zmienna "imię" musi być typu string')
+        if type(nazwisko) is not str:
+            raise TypeError('Zmienna "nazwisko" musi być typu string')
+        if len(imie) == 0:
+            raise ValueError('Nie podano imienia')
+        if len(imie) == 0:
+            raise ValueError('Nie podano imienia')
+        if len(nazwisko) == 0:
+            raise ValueError('Nie podano nazwiska')
+        for i in range(len(self.lista_uczniow)):
+            if self.lista_uczniow[i].imie == imie and self.lista_uczniow[i].nazwisko == nazwisko:
+                return self.lista_uczniow[i].srednia()
+        raise ValueError('Brak ucznia o podanych danych')

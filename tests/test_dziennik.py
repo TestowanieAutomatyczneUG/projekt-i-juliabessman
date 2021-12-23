@@ -29,6 +29,10 @@ class DziennikTest(unittest.TestCase):
         self.dziennik.dodaj_ucznia('Julia', 'Bessman')
         assert_that(calling(self.dziennik.dodaj_ucznia).with_args('Julia', 'Bessman'), raises(ValueError))
 
+    def test_wyswietl_liste_uczniow_pusta_lista(self):
+        assert_that(self.dziennik.wyswietl_liste_uczniow(), empty())
+
+    
 
 
     def tearDown(self):

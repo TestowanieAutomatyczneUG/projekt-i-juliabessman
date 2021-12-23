@@ -130,5 +130,17 @@ class UczenTest(unittest.TestCase):
     def test_srednia_przedmiotu_error_nie_istnieje(self):
         assert_that(self.uczen.srednia_przedmiotu).raises(ValueError).when_called_with('Niemiecki')
 
+
+    def test_srednia_ucznia(self):
+        self.uczen.dodaj_przedmiot('Niemiecki')
+        self.uczen.dodaj_ocene_do_przedmiotu('Niemiecki', 5)
+        self.uczen.dodaj_ocene_do_przedmiotu('Niemiecki', 3)
+
+        self.uczen.dodaj_przedmiot('Francuski')
+        self.uczen.dodaj_ocene_do_przedmiotu('Francuski', 2)
+        self.uczen.dodaj_ocene_do_przedmiotu('Francuski', 4)
+
+        assert_that(self.uczen.srednia()).is_equal_to(3.5)
+
     def tearDown(self):
         self.uczen = None

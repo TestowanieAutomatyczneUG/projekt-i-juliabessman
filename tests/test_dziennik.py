@@ -130,3 +130,9 @@ class DziennikTest(unittest.TestCase):
         assert_that(calling(self.dziennik.edytuj_przedmiot_ucznia).with_args(
             'Julia', 'Bessman', 0, 'Angielski'
         ), raises(ValueError))
+        
+    def test_usun_przedmiot_ucznia(self):
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        self.dziennik.dodaj_przedmiot_do_ucznia('Julia', 'Bessman','Biologia')
+        assert_that(self.dziennik.usun_przedmiot_do_ucznia('Julia', 'Bessman', 'Biologia'),
+                    starts_with('Usunieto przedmiot'))

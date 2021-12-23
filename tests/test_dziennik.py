@@ -158,4 +158,9 @@ class DziennikTest(unittest.TestCase):
             'Julia', 'Bessman', 'Francuski')
             ,
             raises(ValueError))
-        
+
+    def test_dodaj_ocene_ucznia(self):
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        self.dziennik.dodaj_przedmiot_do_ucznia('Julia', 'Bessman', 'Biologia')
+        assert_that(self.dziennik.dodaj_ocene_do_przedmiotu_ucznia('Julia', 'Bessman', 'Biologia', 6),
+                    starts_with('Dodano ocene'))

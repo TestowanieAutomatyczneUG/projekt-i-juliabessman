@@ -24,4 +24,7 @@ class Przedmiot:
             raise ValueError('Id oceny sie nie zgadza')
         self.oceny_z_przedmiotu[id_oceny] = nowa_ocena
 
-    
+    def srednia(self):
+        if len(self.oceny_z_przedmiotu) == 0:
+            return 0
+        return sum(self.oceny_z_przedmiotu) / len(self.oceny_z_przedmiotu)

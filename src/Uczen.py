@@ -49,3 +49,15 @@ class Uczen:
                 del self.lista_przedmiotow[i]
                 return 'Usunieto przedmiot'
         raise ValueError('Nie znaleziono przedmiotu')
+
+    def dodaj_ocene_do_przedmiotu(self, przedmiot, ocena):
+        if type(przedmiot) is not str:
+            raise TypeError('Zmienna "nowy_przedmiot" musi być typu string')
+        if len(przedmiot) == 0:
+            raise ValueError('Nie podano przedmiuotu, który chcemy przypisać')
+
+        for i in range(len(self.lista_przedmiotow)):
+            if self.lista_przedmiotow[i].przedmiot == przedmiot:
+                self.lista_przedmiotow[i].dodaj_ocene(ocena)
+                return 'Dodano ocene do przedmiotu'
+        raise ValueError('Przedmiot nie istnieje')

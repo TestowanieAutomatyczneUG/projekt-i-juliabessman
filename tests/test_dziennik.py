@@ -185,3 +185,10 @@ class DziennikTest(unittest.TestCase):
             'Julia', 'Bessman', 'Francuski', 6)
             ,
             raises(ValueError))
+
+    def test_edytuj_ocene_ucznia(self):
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        self.dziennik.dodaj_przedmiot_do_ucznia('Julia', 'Bessman', 'Biologia')
+        self.dziennik.dodaj_ocene_do_przedmiotu_ucznia('Julia', 'Bessman', 'Biologia', 6)
+        assert_that(self.dziennik.edytuj_ocene_z_przedmiotu_ucznia('Julia', 'Bessman', 'Biologia', 0, 6),
+                    starts_with('Edytowano ocene'))

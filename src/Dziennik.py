@@ -65,4 +65,20 @@ class Dziennik:
             return 'Dane ucznia zostały zaktualizowane'
         raise ValueError('Uczeń o podanych danych nie występuje w bazie')
 
+    def dodaj_przedmiot_do_ucznia(self, imie, nazwisko, nowy_przedmiot):
+        if type(imie) is not str:
+            raise TypeError('Zmienna "imię" musi być typu string')
+        if type(nazwisko) is not str:
+            raise TypeError('Zmienna "nazwisko" musi być typu string')
+        if len(imie) == 0:
+            raise ValueError('Nie podano imienia')
+        if len(nazwisko) == 0:
+            raise ValueError('Nie podano nazwiska')
+
+        for i in range(len(self.lista_uczniow)):
+            if self.lista_uczniow[i].imie == imie and self.lista_uczniow[i].nazwisko == nazwisko:
+                self.lista_uczniow[i].dodaj_przedmiot(nowy_przedmiot)
+                return 'Dodano przedmiot do ucznia'
+        raise ValueError('Nie ma takiego ucznia w bazie')
+
     

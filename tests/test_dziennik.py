@@ -40,4 +40,14 @@ class DziennikTest(unittest.TestCase):
         self.dziennik.dodaj_ucznia('Julia', 'Bessman')
         assert_that(self.dziennik.usun_ucznia('Julia', 'Bessman'), starts_with('Uczeń o podanych'))
 
-   
+    @parameterized.expand([
+        (1, 'Bessman', TypeError),
+        ('', 'Bessman', ValueError),
+        ('Julia', 1, TypeError),
+        ('Julia', '', ValueError),
+    ])
+
+
+    def tearDown(self):
+        self.dziennik = None
+

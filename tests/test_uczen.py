@@ -68,5 +68,11 @@ class UczenTest(unittest.TestCase):
     def test_dodaj_ocene_do_przedmiotu_error(self, przedmiot, ocena, blad):
         self.assertRaises(blad, self.uczen.dodaj_ocene_do_przedmiotu, przedmiot, ocena)
 
+
+    def test_edytuj_ocene_z_przedmiotu(self):
+        self.uczen.dodaj_przedmiot('Niemiecki')
+        self.uczen.dodaj_ocene_do_przedmiotu('Niemiecki', 2)
+        assert_that(self.uczen.edytuj_ocene_z_przedmiotu('Niemiecki', 0, 3)).is_in('Edytowano ocene z przedmiotu', 'Usuniete ocene z przedmiotu')
+
     def tearDown(self):
         self.uczen = None

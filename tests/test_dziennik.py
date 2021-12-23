@@ -56,7 +56,10 @@ class DziennikTest(unittest.TestCase):
             'Julia', 'Bessman'
         ), raises(ValueError))
 
-    
+    def test_edytuj_ucznia(self):
+        self.dziennik.dodaj_ucznia('Julia', 'Bessman')
+        assert_that(self.dziennik.edytuj_ucznia('Julia', 'Bessman', 'Julia2', 'Bessman2'), starts_with('Dane ucznia zostały zaktualizowane'))
+
 
     def tearDown(self):
         self.dziennik = None
